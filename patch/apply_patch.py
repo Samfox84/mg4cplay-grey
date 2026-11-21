@@ -50,7 +50,7 @@ new_method = '''.method private final surfaceVideo(Landroid/content/Context;I)La
 
     invoke-direct {v1}, Landroid/graphics/ColorMatrix;-><init>()V
 
-    const/4 v2, 0x0
+    const v2, 0x3ee66666
 
     invoke-virtual {v1, v2}, Landroid/graphics/ColorMatrix;->setSaturation(F)V
 
@@ -58,7 +58,7 @@ new_method = '''.method private final surfaceVideo(Landroid/content/Context;I)La
 
     invoke-direct {v4}, Landroid/graphics/ColorMatrix;-><init>()V
 
-    const v5, 0x3f0ccccd
+    const v5, 0x3f19999a
 
     const/high16 v6, 0x3f800000
 
