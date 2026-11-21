@@ -27,6 +27,8 @@ mg4 = hits[0]
 pkgdir = os.path.dirname(mg4)
 shutil.copy(os.path.join(patchdir, "GreyTexListener.smali"),
             os.path.join(pkgdir, "GreyTexListener.smali"))
+shutil.copy(os.path.join(patchdir, "GreyConfig.smali"),
+            os.path.join(pkgdir, "GreyConfig.smali"))
 print("placed GreyTexListener.smali in", pkgdir)
 
 # 2. rewrite surfaceVideo()
@@ -50,7 +52,9 @@ new_method = '''.method private final surfaceVideo(Landroid/content/Context;I)La
 
     invoke-direct {v1}, Landroid/graphics/ColorMatrix;-><init>()V
 
-    const v2, 0x3ee66666
+    invoke-static {}, Lcom/shilapi/xcertplay/GreyConfig;->sat()F
+
+    move-result v2
 
     invoke-virtual {v1, v2}, Landroid/graphics/ColorMatrix;->setSaturation(F)V
 
@@ -58,7 +62,9 @@ new_method = '''.method private final surfaceVideo(Landroid/content/Context;I)La
 
     invoke-direct {v4}, Landroid/graphics/ColorMatrix;-><init>()V
 
-    const v5, 0x3f19999a
+    invoke-static {}, Lcom/shilapi/xcertplay/GreyConfig;->dim()F
+
+    move-result v5
 
     const/high16 v6, 0x3f800000
 
