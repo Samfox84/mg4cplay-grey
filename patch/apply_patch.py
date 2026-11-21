@@ -34,7 +34,7 @@ s = open(mg4).read()
 start = s.index('.method private final surfaceVideo(Landroid/content/Context;I)Landroid/view/View;')
 end = s.index('.end method', start) + len('.end method')
 new_method = '''.method private final surfaceVideo(Landroid/content/Context;I)Landroid/view/View;
-    .locals 5
+    .locals 7
     .param p1, "context"    # Landroid/content/Context;
     .param p2, "streamSide"    # I
 
@@ -53,6 +53,18 @@ new_method = '''.method private final surfaceVideo(Landroid/content/Context;I)La
     const/4 v2, 0x0
 
     invoke-virtual {v1, v2}, Landroid/graphics/ColorMatrix;->setSaturation(F)V
+
+    new-instance v4, Landroid/graphics/ColorMatrix;
+
+    invoke-direct {v4}, Landroid/graphics/ColorMatrix;-><init>()V
+
+    const v5, 0x3f0ccccd
+
+    const/high16 v6, 0x3f800000
+
+    invoke-virtual {v4, v5, v5, v5, v6}, Landroid/graphics/ColorMatrix;->setScale(FFFF)V
+
+    invoke-virtual {v1, v4}, Landroid/graphics/ColorMatrix;->postConcat(Landroid/graphics/ColorMatrix;)V
 
     new-instance v2, Landroid/graphics/Paint;
 
