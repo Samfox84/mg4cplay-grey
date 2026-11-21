@@ -1,0 +1,3 @@
+tools/apktool.jar
+*.idsig
+dist/MG4CPlay-grey.apk
