@@ -19,6 +19,9 @@ original APK (as a fallback), the greyscale change, and a script to re-apply it.
 | `keys/grey.p12` | Throwaway signing key (pass `greypass`). Committed on purpose so every grey build is signed with the **same** key and updates install over each other. |
 | `tools/Sign.java` | Reference signer (apksig). `build.sh` uses `apksigner`/`jarsigner`. |
 
+
+> **Signing:** MG4CPlay declares `sharedUserId=android.uid.system`, so it is a *platform* app and **must** be signed with the AOSP platform key (`keys/platform.p12`, pass `android`, alias `platform`). A normal/debug key fails to install with `INSTALL_FAILED_SHARED_USER_INCOMPATIBLE`.
+
 ## How the greyscale works
 
 MG4CPlay draws the cluster map on a **SurfaceView**, whose video sits outside the
