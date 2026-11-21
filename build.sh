@@ -39,10 +39,13 @@ if command -v apksigner >/dev/null 2>&1; then
   apksigner sign --ks keys/platform.p12 --ks-pass pass:android --ks-key-alias platform \
     --out dist/MG4CPlay-grey.apk "$WORK/unsigned.apk"
 else
-  # JDK-only fallback: v1 signature via jarsigner (fine for Android 9 / API 28)
-  cp "$WORK/unsigned.apk" dist/MG4CPlay-grey.apk
-  jarsigner -keystore keys/platform.p12 -storepass android -storetype PKCS12 \
-    -sigalg SHA256withRSA -digestalg SHA-256 dist/MG4CPlay-grey.apk platform >/dev/null
+  # MG4CPlay is sharedUserId=android.uid.system and the car's system UID uses the
+  # APK Signature Scheme v3 - a v1/v2-only signature is REJECTED with
+  # INSTALL_FAILED_SHARED_USER_INCOMPATIBLE. Sign with v3 via apksig.
+  : "${APKSIG_JARS:?set APKSIG_JARS to d8.jar:apksig.jar (from the launcher tools) to sign without apksigner}"
+  javac -cp "$APKSIG_JARS" -d "$WORK" tools/SignV3.java
+  java -cp "$WORK:$APKSIG_JARS" SignV3 keys/platform.p12 android platform \
+    "$WORK/unsigned.apk" dist/MG4CPlay-grey.apk
 fi
 
 echo "==> done: dist/MG4CPlay-grey.apk"

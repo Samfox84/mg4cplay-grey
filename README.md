@@ -20,7 +20,7 @@ original APK (as a fallback), the greyscale change, and a script to re-apply it.
 | `tools/Sign.java` | Reference signer (apksig). `build.sh` uses `apksigner`/`jarsigner`. |
 
 
-> **Signing:** MG4CPlay declares `sharedUserId=android.uid.system`, so it is a *platform* app and **must** be signed with the AOSP platform key (`keys/platform.p12`, pass `android`, alias `platform`). A normal/debug key fails to install with `INSTALL_FAILED_SHARED_USER_INCOMPATIBLE`.
+> **Signing:** MG4CPlay declares `sharedUserId=android.uid.system`, so it is a *platform* app and **must** be signed with the AOSP platform key (`keys/platform.p12`, pass `android`, alias `platform`). It must also be signed with **APK Signature Scheme v3** (the car established the system UID with v3); a v1/v2-only signature is rejected the same way. A normal/debug key fails to install with `INSTALL_FAILED_SHARED_USER_INCOMPATIBLE`.
 
 ## How the greyscale works
 
