@@ -54,8 +54,8 @@ public final class Tune {
     }
 
     public static int def(String key) {
-        if ("dim".equals(key)) return 88;
-        if ("soft".equals(key)) return 20;
+        if ("dim".equals(key)) return 100;
+        if ("soft".equals(key)) return 13;
         if ("bluesat".equals(key)) return 34;
         if ("bluemargin".equals(key)) return 14;
         if ("bluemin".equals(key)) return 42;
@@ -104,9 +104,9 @@ public final class Tune {
             or = 0.310f * s; og = 0.608f * s; ob = 0.941f * s;
         } else {
             float t = (float) Math.pow(clamp01(l), gamma);
-            or = lerp(0.055f, 0.47f, t);
-            og = lerp(0.067f, 0.51f, t);
-            ob = lerp(0.078f, 0.55f, t);
+            or = lerp(0.055f, 0.68f, t);
+            og = lerp(0.067f, 0.71f, t);
+            ob = lerp(0.078f, 0.74f, t);
         }
         or *= dim; og *= dim; ob *= dim;
         return 0xFF000000 | (c8(or) << 16) | (c8(og) << 8) | c8(ob);

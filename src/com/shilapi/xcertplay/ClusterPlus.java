@@ -165,7 +165,7 @@ public final class ClusterPlus {
         "uniform float uGamma;\n" +
         "varying vec2 vUv;\n" +
         "const vec3 BLACK = vec3(0.055,0.067,0.078);\n" + // #0E1114 launcher background
-        "const vec3 LABEL = vec3(0.47,0.51,0.55);\n" +    // muted grey top - no harsh white
+        "const vec3 LABEL = vec3(0.68,0.71,0.74);\n" +    // muted grey top - no harsh white
         "const vec3 BLUE  = vec3(0.310,0.608,0.941);\n" + // #4F9BF0 launcher route
         "void main(){\n" +
         "  vec3 c = texture2D(uTexUnit, vUv).rgb;\n" +
