@@ -1,3 +1,8 @@
+keys/
 tools/apktool.jar
-*.idsig
-dist/MG4CPlay-grey.apk
+out/
+dexout/
+smaliout/
+dist/
+*.keystore
+*.p12
