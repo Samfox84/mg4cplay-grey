@@ -118,6 +118,18 @@ if dpa:
         open(dpa[0], "w").write(d)
         print("wired ClusterUpdater.start() into DiPlayActivity.onCreate")
 
+# 7b. inject CalmPlay controls (open tuner + check updates) into the Display settings card
+if dpa:
+    d = open(dpa[0]).read()
+    danchor = "invoke-direct {p0, v1}, Lcom/shilapi/xcertplay/DiPlayActivity;->carPlaySizeControl(Landroid/widget/LinearLayout;)V"
+    if danchor in d and "addDisplayControls" not in d:
+        dinj = danchor + "\n\n    invoke-static {v1, p0}, Lcom/shilapi/xcertplay/ClusterPlus;->addDisplayControls(Landroid/view/ViewGroup;Landroid/content/Context;)V"
+        d = d.replace(danchor, dinj, 1)
+        open(dpa[0], "w").write(d)
+        print("injected CalmPlay controls into Display settings card")
+    else:
+        print("WARN: Display card anchor not found (carPlaySizeControl)")
+
 # 8. bump versionCode, make versionName unique per build (so update checks detect it)
 yml = os.path.join(decoded, "apktool.yml")
 y = open(yml).read()

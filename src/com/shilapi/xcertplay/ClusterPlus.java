@@ -1,6 +1,7 @@
 package com.shilapi.xcertplay;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.opengl.GLES11Ext;
@@ -15,7 +16,10 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -398,5 +402,52 @@ public final class ClusterPlus {
             else sb.append(mins).append(" min");
         }
         return sb.length() == 0 ? null : sb.toString();
+    }
+
+    // ========================================================================
+    //  CalmPlay controls injected into the Display settings tab
+    // ========================================================================
+    /** Adds the CalmPlay buttons (open tuner, check for updates) to a settings card. */
+    public static void addDisplayControls(ViewGroup card, final Context ctx) {
+        try {
+            TextView head = new TextView(ctx);
+            head.setText("CalmPlay");
+            head.setTextSize(15f);
+            head.setPadding(0, 16, 0, 6);
+            card.addView(head);
+            card.addView(calmBtn(ctx, "Map colours – open tuner", new Runnable() {
+                public void run() { openTuner(ctx); }
+            }));
+            card.addView(calmBtn(ctx, "Check for updates", new Runnable() {
+                public void run() { ClusterUpdater.checkNow(ctx); }
+            }));
+            log("CalmPlay controls added to Display tab");
+        } catch (Throwable t) {
+            Log.e(TAG, "addDisplayControls failed", t);
+        }
+    }
+
+    private static View calmBtn(Context ctx, String text, final Runnable action) {
+        Button b = new Button(ctx);
+        b.setText(text);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        b.setLayoutParams(lp);
+        b.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) { try { action.run(); } catch (Throwable ignore) {} }
+        });
+        return b;
+    }
+
+    /** Launch the map tuner activity in its own task. */
+    static void openTuner(Context ctx) {
+        try {
+            Intent i = new Intent()
+                .setClassName(ctx.getPackageName(), "com.shilapi.xcertplay.MapTunerActivity")
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ctx.startActivity(i);
+        } catch (Throwable t) {
+            Log.e(TAG, "openTuner failed", t);
+        }
     }
 }
