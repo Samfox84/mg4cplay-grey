@@ -74,13 +74,16 @@ public final class MapTunerActivity extends Activity {
         hint.setPadding(0, 0, 0, dp(12));
         root.addView(hint);
 
-        // presets
-        LinearLayout presetRow = new LinearLayout(this);
-        presetRow.setOrientation(LinearLayout.HORIZONTAL);
-        presetRow.addView(presetBtn("Calm dark", new int[]{82, 24, 36, 16, 46}));
-        presetRow.addView(presetBtn("Launcher", new int[]{88, 20, 34, 14, 42}));
-        presetRow.addView(presetBtn("Brighter", new int[]{96, 14, 28, 12, 36}));
-        root.addView(presetRow);
+        // presets with example thumbnails
+        TextView presetLbl = new TextView(this);
+        presetLbl.setText("Presets (tap to apply)");
+        presetLbl.setTextColor(TEXT); presetLbl.setTextSize(16f);
+        presetLbl.setPadding(0, dp(4), 0, dp(2));
+        root.addView(presetLbl);
+        root.addView(presetCard("Night (calm)",   new int[]{78, 18, 30, 12, 38}));
+        root.addView(presetCard("Balanced",       new int[]{100, 13, 30, 12, 38}));
+        root.addView(presetCard("Bright (day)",   new int[]{100, 10, 26, 10, 34}));
+        root.addView(presetCard("Mono (no blue)", new int[]{100, 12, 99, 12, 38}));
 
         // sliders
         for (int i = 0; i < KEYS.length; i++) root.addView(sliderRow(i));
@@ -115,18 +118,44 @@ public final class MapTunerActivity extends Activity {
         return t;
     }
 
-    private Button presetBtn(final String name, final int[] vals) {
-        Button btn = new Button(this);
-        btn.setText(name);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
-        lp.rightMargin = dp(6);
-        btn.setLayoutParams(lp);
-        btn.setOnClickListener(new View.OnClickListener() {
+    /** A preset row: a thumbnail of the sample map recoloured with the preset, plus its name. */
+    private View presetCard(final String name, final int[] vals) {
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        row.setBackgroundColor(CARD);
+        int p = dp(8); row.setPadding(p, p, p, p);
+        LinearLayout.LayoutParams rp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        rp.topMargin = dp(8); row.setLayoutParams(rp);
+
+        ImageView thumb = new ImageView(this);
+        thumb.setImageBitmap(presetThumb(vals));
+        thumb.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        LinearLayout.LayoutParams tp = new LinearLayout.LayoutParams(dp(132), dp(84));
+        tp.rightMargin = dp(12);
+        row.addView(thumb, tp);
+
+        TextView t = new TextView(this);
+        t.setText(name); t.setTextColor(TEXT); t.setTextSize(16f);
+        row.addView(t);
+
+        row.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 for (int i = 0; i < KEYS.length; i++) applyValue(i, vals[i], true);
             }
         });
-        return btn;
+        return row;
+    }
+
+    /** Recolour the sample map with a preset's explicit values -> thumbnail bitmap. */
+    private Bitmap presetThumb(int[] vals) {
+        int w = sample.getWidth(), h = sample.getHeight();
+        Bitmap bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        int[] px = new int[w * h];
+        float d = vals[0] / 100f, gm = vals[1] / 10f, bs = vals[2] / 100f, bmg = vals[3] / 100f, bn = vals[4] / 100f;
+        for (int i = 0; i < srcPx.length; i++) px[i] = Tune.recolorWith(srcPx[i], d, gm, bs, bmg, bn);
+        bm.setPixels(px, 0, w, 0, 0, w, h);
+        return bm;
     }
 
     private View sliderRow(final int idx) {

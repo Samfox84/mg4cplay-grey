@@ -1,6 +1,6 @@
 {
-  "versionCode": 152,
-  "versionName": "CalmPlay-plus152",
-  "apk": "CalmPlay_plus152.apk",
-  "notes": "CalmPlay Map tuner now opens in its own task (no more bounce to CarPlay)."
+  "versionCode": 153,
+  "versionName": "CalmPlay-plus153",
+  "apk": "CalmPlay_plus153.apk",
+  "notes": "Tuner presets now show a thumbnail each (Night/Balanced/Bright/Mono); brighter defaults."
 }

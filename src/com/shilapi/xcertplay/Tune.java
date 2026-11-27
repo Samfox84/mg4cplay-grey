@@ -90,6 +90,11 @@ public final class Tune {
 
     // ---- CPU recolour, identical maths to the GLSL shader (for the live preview) ----
     public static int recolor(int argb) {
+        return recolorWith(argb, dim, gamma, blueSat, blueMargin, blueMin);
+    }
+
+    /** Recolour one pixel with explicit values - used for per-preset thumbnails. */
+    public static int recolorWith(int argb, float dim, float gamma, float blueSat, float blueMargin, float blueMin) {
         float r = ((argb >> 16) & 0xFF) / 255f;
         float g = ((argb >> 8) & 0xFF) / 255f;
         float b = (argb & 0xFF) / 255f;
