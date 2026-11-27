@@ -130,6 +130,23 @@ if dpa:
     else:
         print("WARN: Display card anchor not found (carPlaySizeControl)")
 
+# 7c. default right-hand drive to ON (UK). The default register is shared with the
+# prefs-mode arg, so inject a fresh const/4 v1, 0x1 right before the getBoolean.
+aps = glob.glob(os.path.join(decoded, "smali*", "com/shilapi/xcertplay/AirPlayPersistence.smali"))
+if aps:
+    a = open(aps[0]).read()
+    rhd_anchor = ('    const-string v2, "right_hand_drive"\n\n'
+                  '    invoke-interface {v0, v2, v1}, Landroid/content/SharedPreferences;->getBoolean(Ljava/lang/String;Z)Z')
+    rhd_new = ('    const-string v2, "right_hand_drive"\n\n'
+               '    const/4 v1, 0x1\n\n'
+               '    invoke-interface {v0, v2, v1}, Landroid/content/SharedPreferences;->getBoolean(Ljava/lang/String;Z)Z')
+    if rhd_anchor in a:
+        a = a.replace(rhd_anchor, rhd_new, 1)
+        open(aps[0], "w").write(a)
+        print("right-hand drive default -> ON")
+    else:
+        print("WARN: RHD anchor not found")
+
 # 8. bump versionCode, make versionName unique per build (so update checks detect it)
 yml = os.path.join(decoded, "apktool.yml")
 y = open(yml).read()
