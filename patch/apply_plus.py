@@ -71,6 +71,8 @@ if 'android:extractNativeLibs="false"' in mm:
     print("extractNativeLibs -> true")
 tuner = ('<activity android:name="com.shilapi.xcertplay.MapTunerActivity" '
          'android:exported="true" android:label="CalmPlay Map" '
+         'android:taskAffinity="com.shilapi.xcertplay.tuner" '
+         'android:launchMode="singleTask" android:excludeFromRecents="true" '
          'android:theme="@android:style/Theme.DeviceDefault">'
          '<intent-filter><action android:name="android.intent.action.MAIN"/>'
          '<category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity>')

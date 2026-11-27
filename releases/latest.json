@@ -1,6 +1,6 @@
 {
-  "versionCode": 151,
-  "versionName": "CalmPlay-plus151",
-  "apk": "CalmPlay_plus151.apk",
-  "notes": "Renamed to CalmPlay with new logo; brighter map; recolour + ETA + tuner + self-update."
+  "versionCode": 152,
+  "versionName": "CalmPlay-plus152",
+  "apk": "CalmPlay_plus152.apk",
+  "notes": "CalmPlay Map tuner now opens in its own task (no more bounce to CarPlay)."
 }
