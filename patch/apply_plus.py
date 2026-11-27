@@ -70,7 +70,7 @@ if 'android:extractNativeLibs="false"' in mm:
     mm = mm.replace('android:extractNativeLibs="false"', 'android:extractNativeLibs="true"')
     print("extractNativeLibs -> true")
 tuner = ('<activity android:name="com.shilapi.xcertplay.MapTunerActivity" '
-         'android:exported="true" android:label="MG4CPlay Map" '
+         'android:exported="true" android:label="CalmPlay Map" '
          'android:theme="@android:style/Theme.DeviceDefault">'
          '<intent-filter><action android:name="android.intent.action.MAIN"/>'
          '<category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity>')
@@ -78,6 +78,24 @@ if 'MapTunerActivity' not in mm:
     mm = mm.replace('</application>', tuner + '</application>', 1)
     print("registered MapTunerActivity (launchable)")
 open(man, "w").write(mm)
+
+# 5b. CalmPlay branding: swap icons + rename strings
+_here = os.path.dirname(os.path.abspath(__file__))
+brand = os.path.join(_here, "..", "branding")
+for src, dst in [("ic_carplay.png", "res/drawable/ic_carplay.png"),
+                 ("placeholder_icon.png", "res/raw/placeholder_icon.png")]:
+    s = os.path.join(brand, src)
+    d = os.path.join(decoded, dst)
+    if os.path.exists(s):
+        shutil.copy(s, d)
+        print("branding icon ->", dst)
+sx = os.path.join(decoded, "res/values/strings.xml")
+if os.path.exists(sx):
+    t = open(sx).read()
+    t2 = t.replace("MG4CPlay", "CalmPlay")
+    if t2 != t:
+        open(sx, "w").write(t2)
+        print("renamed MG4CPlay -> CalmPlay in strings")
 
 # 6. repoint the built-in OtaUpdater from the upstream repo to ours
 otas = glob.glob(os.path.join(decoded, "smali*", "com/shilapi/xcertplay/OtaUpdater.smali"))
